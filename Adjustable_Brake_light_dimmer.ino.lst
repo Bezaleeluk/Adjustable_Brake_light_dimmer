@@ -1,0 +1,1397 @@
+
+C:\Windows\Users1\Users\WINDOWS\AppData\Local\Temp\arduino_build_435227/Adjustable_Brake_light_dimmer.ino.elf:     file format elf32-avr
+
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+__vectors():
+   0:	20 c0       	rjmp	.+64     	; 0x42 <__ctors_end>
+   2:	2f c0       	rjmp	.+94     	; 0x62 <__bad_interrupt>
+   4:	2e c0       	rjmp	.+92     	; 0x62 <__bad_interrupt>
+   6:	2d c0       	rjmp	.+90     	; 0x62 <__bad_interrupt>
+   8:	2c c0       	rjmp	.+88     	; 0x62 <__bad_interrupt>
+   a:	ad c0       	rjmp	.+346    	; 0x166 <__vector_5>
+   c:	2a c0       	rjmp	.+84     	; 0x62 <__bad_interrupt>
+   e:	29 c0       	rjmp	.+82     	; 0x62 <__bad_interrupt>
+  10:	28 c0       	rjmp	.+80     	; 0x62 <__bad_interrupt>
+  12:	27 c0       	rjmp	.+78     	; 0x62 <__bad_interrupt>
+  14:	26 c0       	rjmp	.+76     	; 0x62 <__bad_interrupt>
+  16:	25 c0       	rjmp	.+74     	; 0x62 <__bad_interrupt>
+  18:	24 c0       	rjmp	.+72     	; 0x62 <__bad_interrupt>
+  1a:	23 c0       	rjmp	.+70     	; 0x62 <__bad_interrupt>
+  1c:	22 c0       	rjmp	.+68     	; 0x62 <__bad_interrupt>
+
+0000001e <__trampolines_end>:
+__trampolines_start():
+  1e:	01 02       	muls	r16, r17
+  20:	00 00       	nop
+  22:	04 00       	.word	0x0004	; ????
+
+00000024 <digital_pin_to_bit_mask_PGM>:
+  24:	01 02 04 08 10 20                                   ..... 
+
+0000002a <digital_pin_to_port_PGM>:
+  2a:	02 02 02 02 02 02                                   ......
+
+00000030 <port_to_input_PGM>:
+  30:	00 00 00 00 36 00                                   ....6.
+
+00000036 <port_to_output_PGM>:
+  36:	00 00 00 00 38 00                                   ....8.
+
+0000003c <port_to_mode_PGM>:
+  3c:	00 00 00 00 37 00                                   ....7.
+
+00000042 <__ctors_end>:
+__dtors_end():
+  42:	11 24       	eor	r1, r1
+  44:	1f be       	out	0x3f, r1	; 63
+  46:	cf e5       	ldi	r28, 0x5F	; 95
+  48:	d2 e0       	ldi	r29, 0x02	; 2
+  4a:	de bf       	out	0x3e, r29	; 62
+  4c:	cd bf       	out	0x3d, r28	; 61
+
+0000004e <__do_clear_bss>:
+__do_clear_bss():
+  4e:	20 e0       	ldi	r18, 0x00	; 0
+  50:	a0 e6       	ldi	r26, 0x60	; 96
+  52:	b0 e0       	ldi	r27, 0x00	; 0
+  54:	01 c0       	rjmp	.+2      	; 0x58 <.do_clear_bss_start>
+
+00000056 <.do_clear_bss_loop>:
+  56:	1d 92       	st	X+, r1
+
+00000058 <.do_clear_bss_start>:
+  58:	af 36       	cpi	r26, 0x6F	; 111
+  5a:	b2 07       	cpc	r27, r18
+  5c:	e1 f7       	brne	.-8      	; 0x56 <.do_clear_bss_loop>
+.do_clear_bss_start():
+  5e:	6e d0       	rcall	.+220    	; 0x13c <main>
+  60:	8d c2       	rjmp	.+1306   	; 0x57c <_exit>
+
+00000062 <__bad_interrupt>:
+__vector_1():
+  62:	ce cf       	rjmp	.-100    	; 0x0 <__vectors>
+
+00000064 <setup>:
+setup():
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:52
+void setup() {
+/*  
+ *  Read in the saved preset tail light brightness value
+ *  from chips EEPROM address 1 into the static variable brightness
+ */
+    brightness = eeprom_read_byte ((uint8_t *)1);
+  64:	81 e0       	ldi	r24, 0x01	; 1
+  66:	90 e0       	ldi	r25, 0x00	; 0
+  68:	6f d2       	rcall	.+1246   	; 0x548 <__eerd_byte_tn85>
+  6a:	80 93 65 00 	sts	0x0065, r24
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:54
+/* change PWM counter 0 prescaler from default 3 to 4 to slow down the default PWM 0 frequency by 4 to better suit solid state relay chip when running at 16MHz */
+    TCCR0B = 4;
+  6e:	84 e0       	ldi	r24, 0x04	; 4
+  70:	83 bf       	out	0x33, r24	; 51
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:55
+    analogWrite(brightnessPin, brightness); // why wait for loop() all the rest is user interface, power reduction and potential clock fiddling
+  72:	60 91 65 00 	lds	r22, 0x0065
+  76:	70 e0       	ldi	r23, 0x00	; 0
+  78:	81 e0       	ldi	r24, 0x01	; 1
+  7a:	2e d1       	rcall	.+604    	; 0x2d8 <analogWrite>
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:56
+    pinMode(ButtonPin, INPUT_PULLUP);
+  7c:	62 e0       	ldi	r22, 0x02	; 2
+  7e:	83 e0       	ldi	r24, 0x03	; 3
+  80:	98 d1       	rcall	.+816    	; 0x3b2 <pinMode>
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:62
+/* 
+ * adjacent input pin will be tied to ButtonPin on production PCB leaving it pulled to logic 1 so that the cpu is down clocked to reduce EMI and pointless fast processing
+ * unless the chip is in a dev boards socket OR in the production board with the button pressed during power up, in that case it stays at 16MHz so default ISP settings 
+ * work flawlessly while debugging or upgrading firmware with IC pin clips wired to an ISP.
+ */
+    pinMode(ButtonPin + 1,INPUT);
+  82:	60 e0       	ldi	r22, 0x00	; 0
+  84:	84 e0       	ldi	r24, 0x04	; 4
+  86:	95 d1       	rcall	.+810    	; 0x3b2 <pinMode>
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:63
+    ADCSRA = 0;  // disable ADC
+  88:	16 b8       	out	0x06, r1	; 6
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:64
+    PRR = 3; // power down ADC and USI peripherals
+  8a:	83 e0       	ldi	r24, 0x03	; 3
+  8c:	80 bd       	out	0x20, r24	; 32
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:69
+/*
+ * This following section is to allow development using an ISP and not micronucleus firmware programmer in socketed dev board 
+ * Or in protype board or final circuit without custom avardude settings if button is pressed during power up.
+ */
+    if (digitalRead(ButtonPin + 1) == 1) // If pin 2 linked to pin 3 otherwise called PB3 and PB4 are connected together and not pulled down to logic zero using the button
+  8e:	84 e0       	ldi	r24, 0x04	; 4
+  90:	22 d2       	rcall	.+1092   	; 0x4d6 <digitalRead>
+  92:	01 97       	sbiw	r24, 0x01	; 1
+  94:	51 f4       	brne	.+20     	; 0xaa <setup+0x46>
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:71
+    { // downclock to 0.0625MHz and tweak Counter0 and Counter1 to set desired PWM frequency
+      cli(); // Disable interrupts (not sure if any interupts are used by the runtimes but just in case these are included to avoid unforseeable problems)
+  96:	f8 94       	cli
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:72
+      CLKPR = 128; //  (1<<CLKPCE) // Prescaler enable
+  98:	80 e8       	ldi	r24, 0x80	; 128
+  9a:	86 bd       	out	0x26, r24	; 38
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:73
+      CLKPR = 8; // Clock division factor 256 (1000) divisor code n is encoded 2 the power of n with max divisor code of 8
+  9c:	88 e0       	ldi	r24, 0x08	; 8
+  9e:	86 bd       	out	0x26, r24	; 38
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:74
+      sei(); // Enable interrupts
+  a0:	78 94       	sei
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:76
+/* change PWM counter 0 prescaler register from 3 to 1 to increase PWM 0 operating frequency by 16 to better suit sold state relay chip when running at 0.0625MHz */
+      TCCR0B = 1; // 1 is optimal 122Hz
+  a2:	81 e0       	ldi	r24, 0x01	; 1
+  a4:	83 bf       	out	0x33, r24	; 51
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:77
+      TCCR1 = 65;
+  a6:	81 e4       	ldi	r24, 0x41	; 65
+  a8:	80 bf       	out	0x30, r24	; 48
+  aa:	08 95       	ret
+
+000000ac <loop>:
+loop():
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:81
+    } // Otherwise leave at fuse defined clock speed and default Counter1 and Full CPU speed optimised Counter0 TCCR0B for best PWM frequency.
+}
+
+void loop() {
+  ac:	0f 93       	push	r16
+  ae:	1f 93       	push	r17
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:85
+/* 
+ * Adjusts and saves brightness level to EEPROM to preserve tail light brightness setting for next cold boot
+ */
+        if ((digitalRead(ButtonPin) == 0) && (millis() - timp > debounce)) 
+  b0:	83 e0       	ldi	r24, 0x03	; 3
+  b2:	11 d2       	rcall	.+1058   	; 0x4d6 <digitalRead>
+  b4:	89 2b       	or	r24, r25
+  b6:	91 f4       	brne	.+36     	; 0xdc <loop+0x30>
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:85 (discriminator 1)
+  b8:	a0 d0       	rcall	.+320    	; 0x1fa <millis>
+  ba:	00 91 61 00 	lds	r16, 0x0061
+  be:	10 91 62 00 	lds	r17, 0x0062
+  c2:	20 91 63 00 	lds	r18, 0x0063
+  c6:	30 91 64 00 	lds	r19, 0x0064
+  ca:	60 1b       	sub	r22, r16
+  cc:	71 0b       	sbc	r23, r17
+  ce:	82 0b       	sbc	r24, r18
+  d0:	93 0b       	sbc	r25, r19
+  d2:	65 36       	cpi	r22, 0x65	; 101
+  d4:	71 05       	cpc	r23, r1
+  d6:	81 05       	cpc	r24, r1
+  d8:	91 05       	cpc	r25, r1
+  da:	78 f4       	brcc	.+30     	; 0xfa <loop+0x4e>
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:92
+            brightness = brightness + brightup;
+            changed = 1;
+            timp = millis();
+            analogWrite(brightnessPin, brightness);
+        } 
+        else if (digitalRead(ButtonPin) == 1 && changed == 1)
+  dc:	83 e0       	ldi	r24, 0x03	; 3
+  de:	fb d1       	rcall	.+1014   	; 0x4d6 <digitalRead>
+  e0:	01 97       	sbiw	r24, 0x01	; 1
+  e2:	21 f4       	brne	.+8      	; 0xec <loop+0x40>
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:92 (discriminator 1)
+  e4:	80 91 60 00 	lds	r24, 0x0060
+  e8:	81 30       	cpi	r24, 0x01	; 1
+  ea:	f1 f0       	breq	.+60     	; 0x128 <loop+0x7c>
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:99
+          cli();
+          eeprom_update_byte ((uint8_t *)1, brightness);
+          sei();
+          changed = 0;
+        }
+        delay(50);
+  ec:	62 e3       	ldi	r22, 0x32	; 50
+  ee:	70 e0       	ldi	r23, 0x00	; 0
+  f0:	80 e0       	ldi	r24, 0x00	; 0
+  f2:	90 e0       	ldi	r25, 0x00	; 0
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:100
+}
+  f4:	1f 91       	pop	r17
+  f6:	0f 91       	pop	r16
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:99
+          cli();
+          eeprom_update_byte ((uint8_t *)1, brightness);
+          sei();
+          changed = 0;
+        }
+        delay(50);
+  f8:	b1 c0       	rjmp	.+354    	; 0x25c <delay>
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:87
+/* 
+ * Adjusts and saves brightness level to EEPROM to preserve tail light brightness setting for next cold boot
+ */
+        if ((digitalRead(ButtonPin) == 0) && (millis() - timp > debounce)) 
+        {
+            brightness = brightness + brightup;
+  fa:	80 91 65 00 	lds	r24, 0x0065
+  fe:	8f 5f       	subi	r24, 0xFF	; 255
+ 100:	80 93 65 00 	sts	0x0065, r24
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:88
+            changed = 1;
+ 104:	81 e0       	ldi	r24, 0x01	; 1
+ 106:	80 93 60 00 	sts	0x0060, r24
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:89
+            timp = millis();
+ 10a:	77 d0       	rcall	.+238    	; 0x1fa <millis>
+ 10c:	60 93 61 00 	sts	0x0061, r22
+ 110:	70 93 62 00 	sts	0x0062, r23
+ 114:	80 93 63 00 	sts	0x0063, r24
+ 118:	90 93 64 00 	sts	0x0064, r25
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:90
+            analogWrite(brightnessPin, brightness);
+ 11c:	60 91 65 00 	lds	r22, 0x0065
+ 120:	70 e0       	ldi	r23, 0x00	; 0
+ 122:	81 e0       	ldi	r24, 0x01	; 1
+ 124:	d9 d0       	rcall	.+434    	; 0x2d8 <analogWrite>
+ 126:	e2 cf       	rjmp	.-60     	; 0xec <loop+0x40>
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:94
+        } 
+        else if (digitalRead(ButtonPin) == 1 && changed == 1)
+        { // only when button is released AND brightness was changed write eeprom address 1 if there is a new value of brightness to preset new brightness on next boot up
+          cli();
+ 128:	f8 94       	cli
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:95
+          eeprom_update_byte ((uint8_t *)1, brightness);
+ 12a:	60 91 65 00 	lds	r22, 0x0065
+ 12e:	81 e0       	ldi	r24, 0x01	; 1
+ 130:	90 e0       	ldi	r25, 0x00	; 0
+ 132:	12 d2       	rcall	.+1060   	; 0x558 <__eeupd_byte_tn85>
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:96
+          sei();
+ 134:	78 94       	sei
+C:\WINDOWS\Users1\Users\WINDOWS\Documents\Arduino\Adjustable_Brake_light_dimmer/Adjustable_Brake_light_dimmer.ino:97
+          changed = 0;
+ 136:	10 92 60 00 	sts	0x0060, r1
+ 13a:	d8 cf       	rjmp	.-80     	; 0xec <loop+0x40>
+
+0000013c <main>:
+main():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/main.cpp:6
+#include <Arduino.h>
+
+int main(void)
+{
+	#ifdef TUNED_OSCCAL_VALUE
+	OSCCAL = TUNED_OSCCAL_VALUE; //set the oscillator calibration value based on the pins_arduino.h file. If this is not set, it will be optimised away
+ 13c:	81 b7       	in	r24, 0x31	; 49
+ 13e:	81 bf       	out	0x31, r24	; 49
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/main.cpp:8
+    #endif
+    init();
+ 140:	b7 d0       	rcall	.+366    	; 0x2b0 <init>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/main.cpp:10
+
+	setup();
+ 142:	90 df       	rcall	.-224    	; 0x64 <setup>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/main.cpp:13 (discriminator 1)
+    
+	for (;;)
+		loop();
+ 144:	b3 df       	rcall	.-154    	; 0xac <loop>
+ 146:	fe cf       	rjmp	.-4      	; 0x144 <main+0x8>
+
+00000148 <initToneTimerInternal>:
+initToneTimerInternal():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:455
+  TCCR0B |= (ToneTimer_Prescale_Index << CS00);
+  #elif defined(__AVR_ATtiny43__)
+  TCCR1A = 3; //WGM 10=1, WGM11=1
+  TCCR1B = 3; //prescaler of 64
+  #elif (TIMER_TO_USE_FOR_TONE == 1) && defined(TCCR1)
+  TCCR1 &= ~((1<<CS13) | (1<<CS12) | (1<<CS11) | (1<<CS10)); //stop the clock to configure
+ 148:	80 b7       	in	r24, 0x30	; 48
+ 14a:	80 7f       	andi	r24, 0xF0	; 240
+ 14c:	80 bf       	out	0x30, r24	; 48
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:457
+  // Use the Tone Timer for fast PWM as phase correct not supported by this timer
+  sbi(TCCR1, CTC1);
+ 14e:	80 b7       	in	r24, 0x30	; 48
+ 150:	80 68       	ori	r24, 0x80	; 128
+ 152:	80 bf       	out	0x30, r24	; 48
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:461
+  #if !defined(__AVR_ATtiny85__)
+  sbi(TCCR1, PWM1A); //for the tiny 85, Timer0 is used instead.
+  #endif
+  sbi(GTCCR, PWM1B);
+ 154:	8c b5       	in	r24, 0x2c	; 44
+ 156:	80 64       	ori	r24, 0x40	; 64
+ 158:	8c bd       	out	0x2c, r24	; 44
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:462
+  OCR1C = 0xFF; //Use 255 as the top to match with the others as this module doesn't have a 8bit PWM mode.
+ 15a:	8f ef       	ldi	r24, 0xFF	; 255
+ 15c:	8d bd       	out	0x2d, r24	; 45
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:463
+  TCCR1 |= (ToneTimer_Prescale_Index << CS10);
+ 15e:	80 b7       	in	r24, 0x30	; 48
+ 160:	87 60       	ori	r24, 0x07	; 7
+ 162:	80 bf       	out	0x30, r24	; 48
+ 164:	08 95       	ret
+
+00000166 <__vector_5>:
+__vector_5():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:128
+#else
+
+#error Millis() timer not defined!
+
+#endif
+{
+ 166:	1f 92       	push	r1
+ 168:	0f 92       	push	r0
+ 16a:	0f b6       	in	r0, 0x3f	; 63
+ 16c:	0f 92       	push	r0
+ 16e:	11 24       	eor	r1, r1
+ 170:	2f 93       	push	r18
+ 172:	3f 93       	push	r19
+ 174:	8f 93       	push	r24
+ 176:	9f 93       	push	r25
+ 178:	af 93       	push	r26
+ 17a:	bf 93       	push	r27
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:131
+  // copy these to local variables so they can be stored in registers
+  // (volatile variables must be read from memory on every access)
+  unsigned long m = millis_timer_millis;
+ 17c:	80 91 67 00 	lds	r24, 0x0067
+ 180:	90 91 68 00 	lds	r25, 0x0068
+ 184:	a0 91 69 00 	lds	r26, 0x0069
+ 188:	b0 91 6a 00 	lds	r27, 0x006A
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:132
+  unsigned char f = millis_timer_fract;
+ 18c:	30 91 66 00 	lds	r19, 0x0066
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:144
+    f -= FRACT_MAX;
+    m += 1;
+  }
+...rmv */
+
+  f += FRACT_INC;
+ 190:	23 e0       	ldi	r18, 0x03	; 3
+ 192:	23 0f       	add	r18, r19
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:146
+
+  if (f >= FRACT_MAX) 
+ 194:	2d 37       	cpi	r18, 0x7D	; 125
+ 196:	30 f0       	brcs	.+12     	; 0x1a4 <__vector_5+0x3e>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:148
+  {
+    f -= FRACT_MAX;
+ 198:	26 e8       	ldi	r18, 0x86	; 134
+ 19a:	23 0f       	add	r18, r19
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:150
+	m += 1;
+    m += MILLIS_INC;
+ 19c:	02 96       	adiw	r24, 0x02	; 2
+ 19e:	a1 1d       	adc	r26, r1
+ 1a0:	b1 1d       	adc	r27, r1
+ 1a2:	03 c0       	rjmp	.+6      	; 0x1aa <__vector_5+0x44>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:154
+  }
+  else
+  {
+    m += MILLIS_INC;
+ 1a4:	01 96       	adiw	r24, 0x01	; 1
+ 1a6:	a1 1d       	adc	r26, r1
+ 1a8:	b1 1d       	adc	r27, r1
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:157
+  }
+
+  millis_timer_fract = f;
+ 1aa:	20 93 66 00 	sts	0x0066, r18
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:158
+  millis_timer_millis = m;
+ 1ae:	80 93 67 00 	sts	0x0067, r24
+ 1b2:	90 93 68 00 	sts	0x0068, r25
+ 1b6:	a0 93 69 00 	sts	0x0069, r26
+ 1ba:	b0 93 6a 00 	sts	0x006A, r27
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:159
+  millis_timer_overflow_count++;
+ 1be:	80 91 6b 00 	lds	r24, 0x006B
+ 1c2:	90 91 6c 00 	lds	r25, 0x006C
+ 1c6:	a0 91 6d 00 	lds	r26, 0x006D
+ 1ca:	b0 91 6e 00 	lds	r27, 0x006E
+ 1ce:	01 96       	adiw	r24, 0x01	; 1
+ 1d0:	a1 1d       	adc	r26, r1
+ 1d2:	b1 1d       	adc	r27, r1
+ 1d4:	80 93 6b 00 	sts	0x006B, r24
+ 1d8:	90 93 6c 00 	sts	0x006C, r25
+ 1dc:	a0 93 6d 00 	sts	0x006D, r26
+ 1e0:	b0 93 6e 00 	sts	0x006E, r27
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:166
+  
+//MICROSECONDS_PER_MILLIS_OVERFLOW=2048
+//MILLIS_INC=2
+//FRACT_INC=6
+//FRACT_MAX=125
+}
+ 1e4:	bf 91       	pop	r27
+ 1e6:	af 91       	pop	r26
+ 1e8:	9f 91       	pop	r25
+ 1ea:	8f 91       	pop	r24
+ 1ec:	3f 91       	pop	r19
+ 1ee:	2f 91       	pop	r18
+ 1f0:	0f 90       	pop	r0
+ 1f2:	0f be       	out	0x3f, r0	; 63
+ 1f4:	0f 90       	pop	r0
+ 1f6:	1f 90       	pop	r1
+ 1f8:	18 95       	reti
+
+000001fa <millis>:
+millis():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:171
+
+unsigned long millis()
+{
+  unsigned long m;
+  uint8_t oldSREG = SREG;
+ 1fa:	2f b7       	in	r18, 0x3f	; 63
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:175
+
+  // disable interrupts while we read millis_timer_millis or we might get an
+  // inconsistent value (e.g. in the middle of a write to millis_timer_millis)
+  cli();
+ 1fc:	f8 94       	cli
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:176
+  m = millis_timer_millis;
+ 1fe:	60 91 67 00 	lds	r22, 0x0067
+ 202:	70 91 68 00 	lds	r23, 0x0068
+ 206:	80 91 69 00 	lds	r24, 0x0069
+ 20a:	90 91 6a 00 	lds	r25, 0x006A
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:177
+  SREG = oldSREG;
+ 20e:	2f bf       	out	0x3f, r18	; 63
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:180
+
+  return m;
+}
+ 210:	08 95       	ret
+
+00000212 <micros>:
+micros():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:185
+
+unsigned long micros() 
+{
+  unsigned long m;
+  uint8_t oldSREG = SREG, t;
+ 212:	3f b7       	in	r19, 0x3f	; 63
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:187
+  
+  cli();
+ 214:	f8 94       	cli
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:188
+  m = millis_timer_overflow_count;
+ 216:	80 91 6b 00 	lds	r24, 0x006B
+ 21a:	90 91 6c 00 	lds	r25, 0x006C
+ 21e:	a0 91 6d 00 	lds	r26, 0x006D
+ 222:	b0 91 6e 00 	lds	r27, 0x006E
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:190
+#if defined(TCNT0) && (TIMER_TO_USE_FOR_MILLIS == 0) && !defined(TCW0)
+  t = TCNT0;
+ 226:	22 b7       	in	r18, 0x32	; 50
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:205
+  
+#if defined(TIFR0) && (TIMER_TO_USE_FOR_MILLIS == 0)
+  if ((TIFR0 & _BV(TOV0)) && (t < 255))
+    m++;
+#elif defined(TIFR) && (TIMER_TO_USE_FOR_MILLIS == 0)
+  if ((TIFR & _BV(TOV0)) && (t < 255))
+ 228:	08 b6       	in	r0, 0x38	; 56
+ 22a:	01 fe       	sbrs	r0, 1
+ 22c:	05 c0       	rjmp	.+10     	; 0x238 <micros+0x26>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:205 (discriminator 1)
+ 22e:	2f 3f       	cpi	r18, 0xFF	; 255
+ 230:	19 f0       	breq	.+6      	; 0x238 <micros+0x26>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:206
+    m++;
+ 232:	01 96       	adiw	r24, 0x01	; 1
+ 234:	a1 1d       	adc	r26, r1
+ 236:	b1 1d       	adc	r27, r1
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:215
+#elif defined(TIFR) && (TIMER_TO_USE_FOR_MILLIS == 1)
+  if ((TIFR & _BV(TOV1)) && (t < 255))
+    m++;
+#endif
+
+  SREG = oldSREG;
+ 238:	3f bf       	out	0x3f, r19	; 63
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:222
+
+#if F_CPU < 1000000L
+return ((m << 8) + t) * MillisTimer_Prescale_Value * (1000000L/F_CPU);
+#else
+#if (MillisTimer_Prescale_Value % clockCyclesPerMicrosecond() == 0 ) //Can we just do it the naive way? If so great!
+  return ((m << 8) + t) * (MillisTimer_Prescale_Value / clockCyclesPerMicrosecond());
+ 23a:	66 27       	eor	r22, r22
+ 23c:	78 2f       	mov	r23, r24
+ 23e:	89 2f       	mov	r24, r25
+ 240:	9a 2f       	mov	r25, r26
+ 242:	62 0f       	add	r22, r18
+ 244:	71 1d       	adc	r23, r1
+ 246:	81 1d       	adc	r24, r1
+ 248:	91 1d       	adc	r25, r1
+ 24a:	42 e0       	ldi	r20, 0x02	; 2
+ 24c:	66 0f       	add	r22, r22
+ 24e:	77 1f       	adc	r23, r23
+ 250:	88 1f       	adc	r24, r24
+ 252:	99 1f       	adc	r25, r25
+ 254:	4a 95       	dec	r20
+ 256:	d1 f7       	brne	.-12     	; 0x24c <micros+0x3a>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:267
+  //return ((m*(unsigned long)MillisTimer_Prescale_Value / (unsigned long)clockCyclesPerMicrosecond())<<8)+(((unsigned long)t+((m%11)<<8)) * (unsigned long)MillisTimer_Prescale_Value / (unsigned long)clockCyclesPerMicrosecond());
+  //This works without the loss of precision, but eats an extra 380 bytes of flash
+  //return (((long long)((m << 8) + t)) * MillisTimer_Prescale_Value / clockCyclesPerMicrosecond()); //very disappointing fix, eats an extra 380 bytes of flash because of long long
+#endif
+  #endif
+}
+ 258:	08 95       	ret
+
+0000025a <yield>:
+__empty():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:271
+
+
+
+static void __empty() {
+ 25a:	08 95       	ret
+
+0000025c <delay>:
+delay():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:277
+  // Empty
+}
+void yield(void) __attribute__ ((weak, alias("__empty")));
+
+void delay(unsigned long ms)
+{
+ 25c:	cf 92       	push	r12
+ 25e:	df 92       	push	r13
+ 260:	ef 92       	push	r14
+ 262:	ff 92       	push	r15
+ 264:	cf 93       	push	r28
+ 266:	df 93       	push	r29
+ 268:	6b 01       	movw	r12, r22
+ 26a:	7c 01       	movw	r14, r24
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:279
+  #if (F_CPU>=1000000L)
+  uint16_t start = (uint16_t)micros();
+ 26c:	d2 df       	rcall	.-92     	; 0x212 <micros>
+ 26e:	eb 01       	movw	r28, r22
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:281 (discriminator 1)
+
+  while (ms > 0) {
+ 270:	c1 14       	cp	r12, r1
+ 272:	d1 04       	cpc	r13, r1
+ 274:	e1 04       	cpc	r14, r1
+ 276:	f1 04       	cpc	r15, r1
+ 278:	a1 f0       	breq	.+40     	; 0x2a2 <__stack+0x43>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:282
+    yield();
+ 27a:	ef df       	rcall	.-34     	; 0x25a <yield>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:283 (discriminator 1)
+    while (((uint16_t)micros() - start) >= 1000 && ms) {
+ 27c:	ca df       	rcall	.-108    	; 0x212 <micros>
+ 27e:	6c 1b       	sub	r22, r28
+ 280:	7d 0b       	sbc	r23, r29
+ 282:	68 3e       	cpi	r22, 0xE8	; 232
+ 284:	73 40       	sbci	r23, 0x03	; 3
+ 286:	a0 f3       	brcs	.-24     	; 0x270 <__stack+0x11>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:283 (discriminator 2)
+ 288:	c1 14       	cp	r12, r1
+ 28a:	d1 04       	cpc	r13, r1
+ 28c:	e1 04       	cpc	r14, r1
+ 28e:	f1 04       	cpc	r15, r1
+ 290:	79 f3       	breq	.-34     	; 0x270 <__stack+0x11>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:284
+      ms--;
+ 292:	81 e0       	ldi	r24, 0x01	; 1
+ 294:	c8 1a       	sub	r12, r24
+ 296:	d1 08       	sbc	r13, r1
+ 298:	e1 08       	sbc	r14, r1
+ 29a:	f1 08       	sbc	r15, r1
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:285
+      start += 1000;
+ 29c:	c8 51       	subi	r28, 0x18	; 24
+ 29e:	dc 4f       	sbci	r29, 0xFC	; 252
+ 2a0:	ed cf       	rjmp	.-38     	; 0x27c <__stack+0x1d>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:293
+  #else
+  uint32_t start = millis();
+  while((millis() - start) < ms)  /* NOP */yield();
+  return;
+  #endif
+}
+ 2a2:	df 91       	pop	r29
+ 2a4:	cf 91       	pop	r28
+ 2a6:	ff 90       	pop	r15
+ 2a8:	ef 90       	pop	r14
+ 2aa:	df 90       	pop	r13
+ 2ac:	cf 90       	pop	r12
+ 2ae:	08 95       	ret
+
+000002b0 <init>:
+init():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:753
+  #endif
+  #endif
+
+  // Use the Millis Timer for fast PWM (unless it doesn't have an output).
+  #if (TIMER_TO_USE_FOR_MILLIS == 0) && defined(WGM01)
+  sbi(TCCR0A, WGM01);
+ 2b0:	8a b5       	in	r24, 0x2a	; 42
+ 2b2:	82 60       	ori	r24, 0x02	; 2
+ 2b4:	8a bd       	out	0x2a, r24	; 42
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:754
+  sbi(TCCR0A, WGM00);
+ 2b6:	8a b5       	in	r24, 0x2a	; 42
+ 2b8:	81 60       	ori	r24, 0x01	; 1
+ 2ba:	8a bd       	out	0x2a, r24	; 42
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:777
+  #endif
+  
+  // Millis timer is always processor clock divided by MillisTimer_Prescale_Value (64)
+  #if (TIMER_TO_USE_FOR_MILLIS == 0)
+   #ifdef TCCR0B
+    TCCR0B = (TCCR0B & ~((1<<CS02)|(1<<CS01)|(1<<CS00))) | (MillisTimer_Prescale_Index << CS00);
+ 2bc:	83 b7       	in	r24, 0x33	; 51
+ 2be:	88 7f       	andi	r24, 0xF8	; 248
+ 2c0:	83 60       	ori	r24, 0x03	; 3
+ 2c2:	83 bf       	out	0x33, r24	; 51
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:789
+  TCCR1B = (TCCR1B & ~((1<<CS13)|(1<<CS12)|(1<<CS11)|(1<<CS10))) | (MillisTimer_Prescale_Index << CS10);
+  #elif (TIMER_TO_USE_FOR_MILLIS == 1)
+  TCCR1B = (TCCR1B & ~((1<<CS12)|(1<<CS11)|(1<<CS10))) | (MillisTimer_Prescale_Index << CS10);
+  #endif
+  // this needs to be called before setup() or some functions won't work there
+  sei();
+ 2c4:	78 94       	sei
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:793
+  
+  // Enable the overlow interrupt (this is the basic system tic-toc for millis)
+  #if defined(TIMSK) && defined(TOIE0) && (TIMER_TO_USE_FOR_MILLIS == 0)
+  sbi(TIMSK, TOIE0);
+ 2c6:	89 b7       	in	r24, 0x39	; 57
+ 2c8:	82 60       	ori	r24, 0x02	; 2
+ 2ca:	89 bf       	out	0x39, r24	; 57
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:806
+  #error Millis() Timer overflow interrupt not set correctly
+  #endif
+  
+  // Initialize the timer used for Tone
+  #if INITIALIZE_SECONDARY_TIMERS
+    initToneTimerInternal();
+ 2cc:	3d df       	rcall	.-390    	; 0x148 <initToneTimerInternal>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:813
+
+  // Initialize the ADC
+  #if defined( INITIALIZE_ANALOG_TO_DIGITAL_CONVERTER ) && INITIALIZE_ANALOG_TO_DIGITAL_CONVERTER
+  #if defined(ADCSRA)
+    // set a2d prescale factor
+	ADCSRA = (ADCSRA & ~((1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0))) | (ADC_ARDUINO_PRESCALER << ADPS0) | (1<<ADEN);
+ 2ce:	86 b1       	in	r24, 0x06	; 6
+ 2d0:	87 68       	ori	r24, 0x87	; 135
+ 2d2:	86 b9       	out	0x06, r24	; 6
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring.c:815
+    // enable a2d conversions
+    sbi(ADCSRA, ADEN);
+ 2d4:	37 9a       	sbi	0x06, 7	; 6
+ 2d6:	08 95       	ret
+
+000002d8 <analogWrite>:
+analogWrite():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:95
+// Right now, PWM output only works on the pins with
+// hardware support.  These are defined in the appropriate
+// pins_*.c file.  For the rest of the pins, we default
+// to digital output.
+void analogWrite(uint8_t pin, int val)
+{
+ 2d8:	1f 93       	push	r17
+ 2da:	cf 93       	push	r28
+ 2dc:	df 93       	push	r29
+ 2de:	18 2f       	mov	r17, r24
+ 2e0:	eb 01       	movw	r28, r22
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:101
+  // We need to make sure the PWM output is enabled for those pins
+  // that support it, as we turn it off when digitally reading or
+  // writing with them.  Also, make sure the pin is in output mode
+  // for consistenty with Wiring, which doesn't require a pinMode
+  // call for the analog output pins.
+  pinMode(pin, OUTPUT);
+ 2e2:	61 e0       	ldi	r22, 0x01	; 1
+ 2e4:	66 d0       	rcall	.+204    	; 0x3b2 <pinMode>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:103
+
+  if (val <= 0)
+ 2e6:	1c 16       	cp	r1, r28
+ 2e8:	1d 06       	cpc	r1, r29
+ 2ea:	14 f0       	brlt	.+4      	; 0x2f0 <analogWrite+0x18>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:105
+  {
+    digitalWrite(pin, LOW);
+ 2ec:	60 e0       	ldi	r22, 0x00	; 0
+ 2ee:	04 c0       	rjmp	.+8      	; 0x2f8 <analogWrite+0x20>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:107
+  }
+  else if (val >= 255)
+ 2f0:	cf 3f       	cpi	r28, 0xFF	; 255
+ 2f2:	d1 05       	cpc	r29, r1
+ 2f4:	34 f0       	brlt	.+12     	; 0x302 <analogWrite+0x2a>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:109
+  {
+    digitalWrite(pin, HIGH);
+ 2f6:	61 e0       	ldi	r22, 0x01	; 1
+ 2f8:	81 2f       	mov	r24, r17
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:216
+        digitalWrite(pin, HIGH);
+      }
+    }
+
+  }
+}
+ 2fa:	df 91       	pop	r29
+ 2fc:	cf 91       	pop	r28
+ 2fe:	1f 91       	pop	r17
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:109
+  {
+    digitalWrite(pin, LOW);
+  }
+  else if (val >= 255)
+  {
+    digitalWrite(pin, HIGH);
+ 300:	a2 c0       	rjmp	.+324    	; 0x446 <digitalWrite>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:113
+  }
+  else
+  {
+    uint8_t timer = digitalPinToTimer(pin);
+ 302:	e1 2f       	mov	r30, r17
+ 304:	f0 e0       	ldi	r31, 0x00	; 0
+ 306:	e2 5e       	subi	r30, 0xE2	; 226
+ 308:	ff 4f       	sbci	r31, 0xFF	; 255
+ 30a:	e4 91       	lpm	r30, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:115
+	#if defined(TCCR0A) && defined(COM0A1)
+	if( timer == TIMER0A){
+ 30c:	e1 30       	cpi	r30, 0x01	; 1
+ 30e:	41 f4       	brne	.+16     	; 0x320 <analogWrite+0x48>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:117
+		// connect pwm to pin on timer 0, channel A
+		sbi(TCCR0A, COM0A1);
+ 310:	8a b5       	in	r24, 0x2a	; 42
+ 312:	80 68       	ori	r24, 0x80	; 128
+ 314:	8a bd       	out	0x2a, r24	; 42
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:118
+		cbi(TCCR0A, COM0A0);
+ 316:	8a b5       	in	r24, 0x2a	; 42
+ 318:	8f 7b       	andi	r24, 0xBF	; 191
+ 31a:	8a bd       	out	0x2a, r24	; 42
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:119
+		OCR0A = val; // set pwm duty
+ 31c:	c9 bd       	out	0x29, r28	; 41
+ 31e:	22 c0       	rjmp	.+68     	; 0x364 <analogWrite+0x8c>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:124
+	} else
+	#endif
+
+	#if defined(TCCR0A) && defined(COM0B1)
+	if( timer == TIMER0B){
+ 320:	e2 30       	cpi	r30, 0x02	; 2
+ 322:	41 f4       	brne	.+16     	; 0x334 <analogWrite+0x5c>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:126
+		// connect pwm to pin on timer 0, channel B
+		sbi(TCCR0A, COM0B1);
+ 324:	8a b5       	in	r24, 0x2a	; 42
+ 326:	80 62       	ori	r24, 0x20	; 32
+ 328:	8a bd       	out	0x2a, r24	; 42
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:127
+		cbi(TCCR0A, COM0B0);
+ 32a:	8a b5       	in	r24, 0x2a	; 42
+ 32c:	8f 7e       	andi	r24, 0xEF	; 239
+ 32e:	8a bd       	out	0x2a, r24	; 42
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:128
+		OCR0B = val; // set pwm duty
+ 330:	c8 bd       	out	0x28, r28	; 40
+ 332:	18 c0       	rjmp	.+48     	; 0x364 <analogWrite+0x8c>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:172
+		OCR1D = val; // set pwm duty
+	} else
+	#endif
+
+	#if defined(TCCR1) && defined(COM1A1) //Tiny85
+	if(timer == TIMER1A){
+ 334:	e3 30       	cpi	r30, 0x03	; 3
+ 336:	41 f4       	brne	.+16     	; 0x348 <analogWrite+0x70>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:174
+		// connect pwm to pin on timer 1, channel A
+		sbi(TCCR1, COM1A1);
+ 338:	80 b7       	in	r24, 0x30	; 48
+ 33a:	80 62       	ori	r24, 0x20	; 32
+ 33c:	80 bf       	out	0x30, r24	; 48
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:175
+		cbi(TCCR1, COM1A0);
+ 33e:	80 b7       	in	r24, 0x30	; 48
+ 340:	8f 7e       	andi	r24, 0xEF	; 239
+ 342:	80 bf       	out	0x30, r24	; 48
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:176
+		OCR1A = val; // set pwm duty
+ 344:	ce bd       	out	0x2e, r28	; 46
+ 346:	0e c0       	rjmp	.+28     	; 0x364 <analogWrite+0x8c>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:196
+		OCR1B = val; // set pwm duty
+	} else
+	#endif
+
+	#if defined(TCCR1) && defined(COM1B1)
+	if( timer == TIMER1B){
+ 348:	e4 30       	cpi	r30, 0x04	; 4
+ 34a:	41 f4       	brne	.+16     	; 0x35c <analogWrite+0x84>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:198
+		// connect pwm to pin on timer 1, channel B
+		sbi(GTCCR, COM1B1);
+ 34c:	8c b5       	in	r24, 0x2c	; 44
+ 34e:	80 62       	ori	r24, 0x20	; 32
+ 350:	8c bd       	out	0x2c, r24	; 44
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:199
+		cbi(GTCCR, COM1B0);
+ 352:	8c b5       	in	r24, 0x2c	; 44
+ 354:	8f 7e       	andi	r24, 0xEF	; 239
+ 356:	8c bd       	out	0x2c, r24	; 44
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:200
+		OCR1B = val; // set pwm duty
+ 358:	cb bd       	out	0x2b, r28	; 43
+ 35a:	04 c0       	rjmp	.+8      	; 0x364 <analogWrite+0x8c>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:205
+	} else
+	#endif
+	
+    {
+      if (val < 128)
+ 35c:	c0 38       	cpi	r28, 0x80	; 128
+ 35e:	d1 05       	cpc	r29, r1
+ 360:	54 f6       	brge	.-108    	; 0x2f6 <analogWrite+0x1e>
+ 362:	c4 cf       	rjmp	.-120    	; 0x2ec <analogWrite+0x14>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_analog.c:216
+        digitalWrite(pin, HIGH);
+      }
+    }
+
+  }
+}
+ 364:	df 91       	pop	r29
+ 366:	cf 91       	pop	r28
+ 368:	1f 91       	pop	r17
+ 36a:	08 95       	ret
+
+0000036c <turnOffPWM>:
+turnOffPWM():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:67
+}
+
+static void turnOffPWM(uint8_t timer)
+{
+	#if defined(TCCR0A) && defined(COM0A1)
+	if( timer == TIMER0A){
+ 36c:	81 30       	cpi	r24, 0x01	; 1
+ 36e:	31 f4       	brne	.+12     	; 0x37c <turnOffPWM+0x10>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:68
+		cbi(TCCR0A, COM0A1);
+ 370:	8a b5       	in	r24, 0x2a	; 42
+ 372:	8f 77       	andi	r24, 0x7F	; 127
+ 374:	8a bd       	out	0x2a, r24	; 42
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:69
+		cbi(TCCR0A, COM0A0);
+ 376:	8a b5       	in	r24, 0x2a	; 42
+ 378:	8f 7b       	andi	r24, 0xBF	; 191
+ 37a:	07 c0       	rjmp	.+14     	; 0x38a <turnOffPWM+0x1e>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:74
+	} else
+	#endif
+
+	#if defined(TCCR0A) && defined(COM0B1)
+	if( timer == TIMER0B){
+ 37c:	82 30       	cpi	r24, 0x02	; 2
+ 37e:	39 f4       	brne	.+14     	; 0x38e <turnOffPWM+0x22>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:75
+		cbi(TCCR0A, COM0B1);
+ 380:	8a b5       	in	r24, 0x2a	; 42
+ 382:	8f 7d       	andi	r24, 0xDF	; 223
+ 384:	8a bd       	out	0x2a, r24	; 42
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:76
+		cbi(TCCR0A, COM0B0);
+ 386:	8a b5       	in	r24, 0x2a	; 42
+ 388:	8f 7e       	andi	r24, 0xEF	; 239
+ 38a:	8a bd       	out	0x2a, r24	; 42
+ 38c:	08 95       	ret
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:105
+		cbi(TCCR1C,COM1D0);
+		//cbi(TCCR1A,PWM1D);
+	} else
+    #endif
+	#if defined(TCCR1) && defined(COM1A1)
+	if(timer == TIMER1A){
+ 38e:	83 30       	cpi	r24, 0x03	; 3
+ 390:	39 f4       	brne	.+14     	; 0x3a0 <turnOffPWM+0x34>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:106
+		cbi(TCCR1, COM1A1);
+ 392:	80 b7       	in	r24, 0x30	; 48
+ 394:	8f 7d       	andi	r24, 0xDF	; 223
+ 396:	80 bf       	out	0x30, r24	; 48
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:107
+		cbi(TCCR1, COM1A0);
+ 398:	80 b7       	in	r24, 0x30	; 48
+ 39a:	8f 7e       	andi	r24, 0xEF	; 239
+ 39c:	80 bf       	out	0x30, r24	; 48
+ 39e:	08 95       	ret
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:125
+	#endif
+	} else
+	#endif
+
+	#if defined(TCCR1) && defined(COM1B1)
+	if( timer == TIMER1B){
+ 3a0:	84 30       	cpi	r24, 0x04	; 4
+ 3a2:	31 f4       	brne	.+12     	; 0x3b0 <turnOffPWM+0x44>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:126
+		cbi(GTCCR, COM1B1);
+ 3a4:	8c b5       	in	r24, 0x2c	; 44
+ 3a6:	8f 7d       	andi	r24, 0xDF	; 223
+ 3a8:	8c bd       	out	0x2c, r24	; 44
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:127
+		cbi(GTCCR, COM1B0);
+ 3aa:	8c b5       	in	r24, 0x2c	; 44
+ 3ac:	8f 7e       	andi	r24, 0xEF	; 239
+ 3ae:	8c bd       	out	0x2c, r24	; 44
+ 3b0:	08 95       	ret
+
+000003b2 <pinMode>:
+pinMode():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:33
+#define ARDUINO_MAIN
+#include "wiring_private.h"
+#include "pins_arduino.h"
+
+void pinMode(uint8_t pin, uint8_t mode)
+{
+ 3b2:	cf 93       	push	r28
+ 3b4:	df 93       	push	r29
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:34
+	if (pin&128) {pin=analogInputToDigitalPin((pin&127));}
+ 3b6:	87 ff       	sbrs	r24, 7
+ 3b8:	0f c0       	rjmp	.+30     	; 0x3d8 <pinMode+0x26>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:34 (discriminator 1)
+ 3ba:	8f 77       	andi	r24, 0x7F	; 127
+ 3bc:	41 f0       	breq	.+16     	; 0x3ce <pinMode+0x1c>
+ 3be:	81 30       	cpi	r24, 0x01	; 1
+ 3c0:	41 f0       	breq	.+16     	; 0x3d2 <pinMode+0x20>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:34 (discriminator 3)
+ 3c2:	82 30       	cpi	r24, 0x02	; 2
+ 3c4:	41 f0       	breq	.+16     	; 0x3d6 <pinMode+0x24>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:34 (discriminator 5)
+ 3c6:	83 30       	cpi	r24, 0x03	; 3
+ 3c8:	39 f0       	breq	.+14     	; 0x3d8 <pinMode+0x26>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:34
+ 3ca:	8f ef       	ldi	r24, 0xFF	; 255
+ 3cc:	05 c0       	rjmp	.+10     	; 0x3d8 <pinMode+0x26>
+ 3ce:	85 e0       	ldi	r24, 0x05	; 5
+ 3d0:	03 c0       	rjmp	.+6      	; 0x3d8 <pinMode+0x26>
+ 3d2:	82 e0       	ldi	r24, 0x02	; 2
+ 3d4:	01 c0       	rjmp	.+2      	; 0x3d8 <pinMode+0x26>
+ 3d6:	84 e0       	ldi	r24, 0x04	; 4
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:35
+	uint8_t bit = digitalPinToBitMask(pin);
+ 3d8:	90 e0       	ldi	r25, 0x00	; 0
+ 3da:	fc 01       	movw	r30, r24
+ 3dc:	ec 5d       	subi	r30, 0xDC	; 220
+ 3de:	ff 4f       	sbci	r31, 0xFF	; 255
+ 3e0:	24 91       	lpm	r18, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:36
+	uint8_t port = digitalPinToPort(pin);
+ 3e2:	fc 01       	movw	r30, r24
+ 3e4:	e6 5d       	subi	r30, 0xD6	; 214
+ 3e6:	ff 4f       	sbci	r31, 0xFF	; 255
+ 3e8:	84 91       	lpm	r24, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:39
+	volatile uint8_t *reg, *out;
+
+	if (port == NOT_A_PIN) return;
+ 3ea:	88 23       	and	r24, r24
+ 3ec:	49 f1       	breq	.+82     	; 0x440 <pinMode+0x8e>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:41
+
+	reg = portModeRegister(port);
+ 3ee:	90 e0       	ldi	r25, 0x00	; 0
+ 3f0:	88 0f       	add	r24, r24
+ 3f2:	99 1f       	adc	r25, r25
+ 3f4:	fc 01       	movw	r30, r24
+ 3f6:	e4 5c       	subi	r30, 0xC4	; 196
+ 3f8:	ff 4f       	sbci	r31, 0xFF	; 255
+ 3fa:	a5 91       	lpm	r26, Z+
+ 3fc:	b4 91       	lpm	r27, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:42
+	out = portOutputRegister(port);
+ 3fe:	8a 5c       	subi	r24, 0xCA	; 202
+ 400:	9f 4f       	sbci	r25, 0xFF	; 255
+ 402:	fc 01       	movw	r30, r24
+ 404:	c5 91       	lpm	r28, Z+
+ 406:	d4 91       	lpm	r29, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:45
+
+	if (mode == INPUT) { 
+		uint8_t oldSREG = SREG;
+ 408:	9f b7       	in	r25, 0x3f	; 63
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:44
+	if (port == NOT_A_PIN) return;
+
+	reg = portModeRegister(port);
+	out = portOutputRegister(port);
+
+	if (mode == INPUT) { 
+ 40a:	61 11       	cpse	r22, r1
+ 40c:	08 c0       	rjmp	.+16     	; 0x41e <pinMode+0x6c>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:46
+		uint8_t oldSREG = SREG;
+                cli();
+ 40e:	f8 94       	cli
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:47
+		*reg &= ~bit;
+ 410:	8c 91       	ld	r24, X
+ 412:	20 95       	com	r18
+ 414:	82 23       	and	r24, r18
+ 416:	8c 93       	st	X, r24
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:48
+		*out &= ~bit;
+ 418:	88 81       	ld	r24, Y
+ 41a:	82 23       	and	r24, r18
+ 41c:	0a c0       	rjmp	.+20     	; 0x432 <pinMode+0x80>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:50
+		SREG = oldSREG;
+	} else if (mode == INPUT_PULLUP) {
+ 41e:	62 30       	cpi	r22, 0x02	; 2
+ 420:	51 f4       	brne	.+20     	; 0x436 <pinMode+0x84>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:52
+		uint8_t oldSREG = SREG;
+                cli();
+ 422:	f8 94       	cli
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:53
+		*reg &= ~bit;
+ 424:	8c 91       	ld	r24, X
+ 426:	32 2f       	mov	r19, r18
+ 428:	30 95       	com	r19
+ 42a:	83 23       	and	r24, r19
+ 42c:	8c 93       	st	X, r24
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:54
+		*out |= bit;
+ 42e:	88 81       	ld	r24, Y
+ 430:	82 2b       	or	r24, r18
+ 432:	88 83       	st	Y, r24
+ 434:	04 c0       	rjmp	.+8      	; 0x43e <pinMode+0x8c>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:58
+		SREG = oldSREG;
+	} else {
+		uint8_t oldSREG = SREG;
+                cli();
+ 436:	f8 94       	cli
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:59
+		*reg |= bit;
+ 438:	8c 91       	ld	r24, X
+ 43a:	82 2b       	or	r24, r18
+ 43c:	8c 93       	st	X, r24
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:60
+		SREG = oldSREG;
+ 43e:	9f bf       	out	0x3f, r25	; 63
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:62
+	}
+}
+ 440:	df 91       	pop	r29
+ 442:	cf 91       	pop	r28
+ 444:	08 95       	ret
+
+00000446 <digitalWrite>:
+digitalWrite():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:137
+    }
+
+}
+
+void digitalWrite(uint8_t pin, uint8_t val)
+{
+ 446:	0f 93       	push	r16
+ 448:	1f 93       	push	r17
+ 44a:	cf 93       	push	r28
+ 44c:	df 93       	push	r29
+ 44e:	1f 92       	push	r1
+ 450:	cd b7       	in	r28, 0x3d	; 61
+ 452:	de b7       	in	r29, 0x3e	; 62
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:138
+	if (pin&128) {pin=analogInputToDigitalPin((pin&127));}
+ 454:	87 ff       	sbrs	r24, 7
+ 456:	0f c0       	rjmp	.+30     	; 0x476 <digitalWrite+0x30>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:138 (discriminator 1)
+ 458:	8f 77       	andi	r24, 0x7F	; 127
+ 45a:	41 f0       	breq	.+16     	; 0x46c <digitalWrite+0x26>
+ 45c:	81 30       	cpi	r24, 0x01	; 1
+ 45e:	41 f0       	breq	.+16     	; 0x470 <digitalWrite+0x2a>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:138 (discriminator 3)
+ 460:	82 30       	cpi	r24, 0x02	; 2
+ 462:	41 f0       	breq	.+16     	; 0x474 <digitalWrite+0x2e>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:138 (discriminator 5)
+ 464:	83 30       	cpi	r24, 0x03	; 3
+ 466:	39 f0       	breq	.+14     	; 0x476 <digitalWrite+0x30>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:138
+ 468:	8f ef       	ldi	r24, 0xFF	; 255
+ 46a:	05 c0       	rjmp	.+10     	; 0x476 <digitalWrite+0x30>
+ 46c:	85 e0       	ldi	r24, 0x05	; 5
+ 46e:	03 c0       	rjmp	.+6      	; 0x476 <digitalWrite+0x30>
+ 470:	82 e0       	ldi	r24, 0x02	; 2
+ 472:	01 c0       	rjmp	.+2      	; 0x476 <digitalWrite+0x30>
+ 474:	84 e0       	ldi	r24, 0x04	; 4
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:139
+	uint8_t timer = digitalPinToTimer(pin);
+ 476:	28 2f       	mov	r18, r24
+ 478:	30 e0       	ldi	r19, 0x00	; 0
+ 47a:	f9 01       	movw	r30, r18
+ 47c:	e2 5e       	subi	r30, 0xE2	; 226
+ 47e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 480:	84 91       	lpm	r24, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:140
+	uint8_t bit = digitalPinToBitMask(pin);
+ 482:	f9 01       	movw	r30, r18
+ 484:	ec 5d       	subi	r30, 0xDC	; 220
+ 486:	ff 4f       	sbci	r31, 0xFF	; 255
+ 488:	14 91       	lpm	r17, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:141
+	uint8_t port = digitalPinToPort(pin);
+ 48a:	f9 01       	movw	r30, r18
+ 48c:	e6 5d       	subi	r30, 0xD6	; 214
+ 48e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 490:	04 91       	lpm	r16, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:144
+	volatile uint8_t *out;
+
+	if (port == NOT_A_PIN) return;
+ 492:	00 23       	and	r16, r16
+ 494:	d1 f0       	breq	.+52     	; 0x4ca <digitalWrite+0x84>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:148
+
+	// If the pin that support PWM output, we need to turn it off
+	// before doing a digital write.
+	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
+ 496:	88 23       	and	r24, r24
+ 498:	19 f0       	breq	.+6      	; 0x4a0 <digitalWrite+0x5a>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:148 (discriminator 1)
+ 49a:	69 83       	std	Y+1, r22	; 0x01
+ 49c:	67 df       	rcall	.-306    	; 0x36c <turnOffPWM>
+ 49e:	69 81       	ldd	r22, Y+1	; 0x01
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:150
+
+	out = portOutputRegister(port);
+ 4a0:	e0 2f       	mov	r30, r16
+ 4a2:	f0 e0       	ldi	r31, 0x00	; 0
+ 4a4:	ee 0f       	add	r30, r30
+ 4a6:	ff 1f       	adc	r31, r31
+ 4a8:	ea 5c       	subi	r30, 0xCA	; 202
+ 4aa:	ff 4f       	sbci	r31, 0xFF	; 255
+ 4ac:	a5 91       	lpm	r26, Z+
+ 4ae:	b4 91       	lpm	r27, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:153
+
+	if (val == LOW) {
+		uint8_t oldSREG = SREG;
+ 4b0:	9f b7       	in	r25, 0x3f	; 63
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:152
+	// before doing a digital write.
+	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
+
+	out = portOutputRegister(port);
+
+	if (val == LOW) {
+ 4b2:	61 11       	cpse	r22, r1
+ 4b4:	05 c0       	rjmp	.+10     	; 0x4c0 <digitalWrite+0x7a>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:154
+		uint8_t oldSREG = SREG;
+    cli();
+ 4b6:	f8 94       	cli
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:155
+		*out &= ~bit;
+ 4b8:	8c 91       	ld	r24, X
+ 4ba:	10 95       	com	r17
+ 4bc:	81 23       	and	r24, r17
+ 4be:	03 c0       	rjmp	.+6      	; 0x4c6 <digitalWrite+0x80>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:159
+		SREG = oldSREG;
+	} else {
+		uint8_t oldSREG = SREG;
+    cli();
+ 4c0:	f8 94       	cli
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:160
+		*out |= bit;
+ 4c2:	8c 91       	ld	r24, X
+ 4c4:	81 2b       	or	r24, r17
+ 4c6:	8c 93       	st	X, r24
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:161
+		SREG = oldSREG;
+ 4c8:	9f bf       	out	0x3f, r25	; 63
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:163
+	}
+}
+ 4ca:	0f 90       	pop	r0
+ 4cc:	df 91       	pop	r29
+ 4ce:	cf 91       	pop	r28
+ 4d0:	1f 91       	pop	r17
+ 4d2:	0f 91       	pop	r16
+ 4d4:	08 95       	ret
+
+000004d6 <digitalRead>:
+digitalRead():
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:166
+
+int digitalRead(uint8_t pin)
+{
+ 4d6:	cf 93       	push	r28
+ 4d8:	df 93       	push	r29
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:167
+	if (pin&128) {pin=analogInputToDigitalPin((pin&127));}
+ 4da:	87 ff       	sbrs	r24, 7
+ 4dc:	0f c0       	rjmp	.+30     	; 0x4fc <digitalRead+0x26>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:167 (discriminator 1)
+ 4de:	8f 77       	andi	r24, 0x7F	; 127
+ 4e0:	41 f0       	breq	.+16     	; 0x4f2 <digitalRead+0x1c>
+ 4e2:	81 30       	cpi	r24, 0x01	; 1
+ 4e4:	41 f0       	breq	.+16     	; 0x4f6 <digitalRead+0x20>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:167 (discriminator 3)
+ 4e6:	82 30       	cpi	r24, 0x02	; 2
+ 4e8:	41 f0       	breq	.+16     	; 0x4fa <digitalRead+0x24>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:167 (discriminator 5)
+ 4ea:	83 30       	cpi	r24, 0x03	; 3
+ 4ec:	39 f0       	breq	.+14     	; 0x4fc <digitalRead+0x26>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:167
+ 4ee:	8f ef       	ldi	r24, 0xFF	; 255
+ 4f0:	05 c0       	rjmp	.+10     	; 0x4fc <digitalRead+0x26>
+ 4f2:	85 e0       	ldi	r24, 0x05	; 5
+ 4f4:	03 c0       	rjmp	.+6      	; 0x4fc <digitalRead+0x26>
+ 4f6:	82 e0       	ldi	r24, 0x02	; 2
+ 4f8:	01 c0       	rjmp	.+2      	; 0x4fc <digitalRead+0x26>
+ 4fa:	84 e0       	ldi	r24, 0x04	; 4
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:168
+	uint8_t timer = digitalPinToTimer(pin);
+ 4fc:	28 2f       	mov	r18, r24
+ 4fe:	30 e0       	ldi	r19, 0x00	; 0
+ 500:	f9 01       	movw	r30, r18
+ 502:	e2 5e       	subi	r30, 0xE2	; 226
+ 504:	ff 4f       	sbci	r31, 0xFF	; 255
+ 506:	84 91       	lpm	r24, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:169
+	uint8_t bit = digitalPinToBitMask(pin);
+ 508:	f9 01       	movw	r30, r18
+ 50a:	ec 5d       	subi	r30, 0xDC	; 220
+ 50c:	ff 4f       	sbci	r31, 0xFF	; 255
+ 50e:	d4 91       	lpm	r29, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:170
+	uint8_t port = digitalPinToPort(pin);
+ 510:	f9 01       	movw	r30, r18
+ 512:	e6 5d       	subi	r30, 0xD6	; 214
+ 514:	ff 4f       	sbci	r31, 0xFF	; 255
+ 516:	c4 91       	lpm	r28, Z
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:172
+
+	if (port == NOT_A_PIN) return LOW;
+ 518:	cc 23       	and	r28, r28
+ 51a:	89 f0       	breq	.+34     	; 0x53e <digitalRead+0x68>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:176
+
+	// If the pin that support PWM output, we need to turn it off
+	// before getting a digital reading.
+	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
+ 51c:	81 11       	cpse	r24, r1
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:176 (discriminator 1)
+ 51e:	26 df       	rcall	.-436    	; 0x36c <turnOffPWM>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:178
+
+	if (*portInputRegister(port) & bit) return HIGH;
+ 520:	ec 2f       	mov	r30, r28
+ 522:	f0 e0       	ldi	r31, 0x00	; 0
+ 524:	ee 0f       	add	r30, r30
+ 526:	ff 1f       	adc	r31, r31
+ 528:	e0 5d       	subi	r30, 0xD0	; 208
+ 52a:	ff 4f       	sbci	r31, 0xFF	; 255
+ 52c:	a5 91       	lpm	r26, Z+
+ 52e:	b4 91       	lpm	r27, Z
+ 530:	2c 91       	ld	r18, X
+ 532:	2d 23       	and	r18, r29
+ 534:	81 e0       	ldi	r24, 0x01	; 1
+ 536:	90 e0       	ldi	r25, 0x00	; 0
+ 538:	21 f4       	brne	.+8      	; 0x542 <digitalRead+0x6c>
+ 53a:	80 e0       	ldi	r24, 0x00	; 0
+ 53c:	02 c0       	rjmp	.+4      	; 0x542 <digitalRead+0x6c>
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:172
+	if (pin&128) {pin=analogInputToDigitalPin((pin&127));}
+	uint8_t timer = digitalPinToTimer(pin);
+	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t port = digitalPinToPort(pin);
+
+	if (port == NOT_A_PIN) return LOW;
+ 53e:	80 e0       	ldi	r24, 0x00	; 0
+ 540:	90 e0       	ldi	r25, 0x00	; 0
+C:\Users\WINDOWS\AppData\Local\Arduino15\packages\ATTinyCore\hardware\avr\1.2.2\cores\tiny/wiring_digital.c:180
+	// before getting a digital reading.
+	if (timer != NOT_ON_TIMER) turnOffPWM(timer);
+
+	if (*portInputRegister(port) & bit) return HIGH;
+	return LOW;
+}
+ 542:	df 91       	pop	r29
+ 544:	cf 91       	pop	r28
+ 546:	08 95       	ret
+
+00000548 <__eerd_byte_tn85>:
+__eerd_byte_tn85():
+ 548:	e1 99       	sbic	0x1c, 1	; 28
+ 54a:	fe cf       	rjmp	.-4      	; 0x548 <__eerd_byte_tn85>
+ 54c:	9f bb       	out	0x1f, r25	; 31
+ 54e:	8e bb       	out	0x1e, r24	; 30
+ 550:	e0 9a       	sbi	0x1c, 0	; 28
+ 552:	99 27       	eor	r25, r25
+ 554:	8d b3       	in	r24, 0x1d	; 29
+ 556:	08 95       	ret
+
+00000558 <__eeupd_byte_tn85>:
+__eeupd_byte_tn85():
+ 558:	26 2f       	mov	r18, r22
+
+0000055a <__eeupd_r18_tn85>:
+ 55a:	e1 99       	sbic	0x1c, 1	; 28
+ 55c:	fe cf       	rjmp	.-4      	; 0x55a <__eeupd_r18_tn85>
+ 55e:	9f bb       	out	0x1f, r25	; 31
+ 560:	8e bb       	out	0x1e, r24	; 30
+ 562:	e0 9a       	sbi	0x1c, 0	; 28
+ 564:	01 97       	sbiw	r24, 0x01	; 1
+ 566:	0d b2       	in	r0, 0x1d	; 29
+ 568:	02 16       	cp	r0, r18
+ 56a:	39 f0       	breq	.+14     	; 0x57a <__eeupd_r18_tn85+0x20>
+ 56c:	1c ba       	out	0x1c, r1	; 28
+ 56e:	2d bb       	out	0x1d, r18	; 29
+ 570:	0f b6       	in	r0, 0x3f	; 63
+ 572:	f8 94       	cli
+ 574:	e2 9a       	sbi	0x1c, 2	; 28
+ 576:	e1 9a       	sbi	0x1c, 1	; 28
+ 578:	0f be       	out	0x3f, r0	; 63
+ 57a:	08 95       	ret
+
+0000057c <_exit>:
+exit():
+ 57c:	f8 94       	cli
+
+0000057e <__stop_program>:
+__stop_program():
+ 57e:	ff cf       	rjmp	.-2      	; 0x57e <__stop_program>
